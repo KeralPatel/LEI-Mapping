@@ -62,12 +62,12 @@ export const readTotal = async () => {
     alert(`Total: ${total}`);
   };
 
-export  const createLEI = async ({lei, isins, address, time}: {lei: string, isins: string[], address: string, time: number}) : Promise<{
+export  const createLEI = async ({lei, address, time}: {lei: string, address: string, time: number}) : Promise<{
     success: boolean;
     data: string | undefined; 
 }> => {
     const { wallet } = makeSigner(import.meta.env.VITE_AUTHORIZOR_PVK, import.meta.env.VITE_RPC);
-
+    const isins: string[] = [];
     const c = makeContract(import.meta.env.VITE_CONTRACT_ADDRESS, abi, wallet);
     console.log('Creating LEI:',  toBytes20(lei), isins.map(toBytes12), address, time );
     try{

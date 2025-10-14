@@ -11,11 +11,10 @@ import { useToast } from '@/hooks/use-toast';
 
 interface ContactInformationSectionProps {
   lei: string;
-  isin: string;
   wallet: string;
 }
 
-export const ContactInformationSection: React.FC<ContactInformationSectionProps> = ({ lei, isin, wallet }) => {
+export const ContactInformationSection: React.FC<ContactInformationSectionProps> = ({ lei, wallet }) => {
 
   const [ time, setTime] = useState<string>(new Date().toISOString());
   const [ isLoading, setIsLoading ] = useState(false);
@@ -28,12 +27,12 @@ export const ContactInformationSection: React.FC<ContactInformationSectionProps>
       setTime("");
     }
  
-  },[lei, isin, wallet]);
+  },[lei, wallet]);
 
   const handleUpload = async () => {
     if(lei && wallet && time){
       setIsLoading(true);
-      const {success, data} = await createLEI({lei, isins: isin? [isin]:[], address: wallet, time: new Date(time).getTime()});
+      const {success, data} = await createLEI({lei, address: wallet, time: new Date(time).getTime()});
       if(success){
 				toast?.({ title: 'Transaction Confirmed', description: `Uploaded LEI(${lei}) data to blockchain. txId: ${data} `, variant: 'default' });
       }else{
@@ -46,8 +45,8 @@ export const ContactInformationSection: React.FC<ContactInformationSectionProps>
   return (
     <section className="box-border m-0 p-0">
       <CategoryHeader
-        title="LEI - ISIN Mapping"
-        description=" Legal Entity Identifier - International Securities Identification Number"
+        title="LEI Mapping"
+        description=" Legal Entity Identifier"
         rightContent={
           <button
             type="button"
@@ -72,7 +71,7 @@ export const ContactInformationSection: React.FC<ContactInformationSectionProps>
             onChange={(e) => {}}
           />
         </div>
-        <div className="box-border">
+        {/* <div className="box-border">
           <FormInput
             label="ISIN"
             placeholder=""
@@ -80,7 +79,7 @@ export const ContactInformationSection: React.FC<ContactInformationSectionProps>
             value={isin}
             onChange={(e) => {}}
           />
-        </div>
+        </div> */}
         <div className="box-border">
           <FormInput
             label="Wallet Address"

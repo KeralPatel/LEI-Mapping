@@ -124,8 +124,8 @@ const KnightsbridgeContent: React.FC<KnightsbridgeProps> = ({ isDarkMode, onThem
 						<div className="w-full h-px bg-border-primary my-8" /> */}
 						<SavingsPlanSection lei={lei} setLei={setLei} setLeiVerified={setLeiVerified} />
 
-						<div className="w-full h-px bg-border-primary my-8" />
-						<PensionPlanSection lei={lei} setISINumber={setISINumber} ISINumber={ISINumber} setIsinVerified={setIsinVerified} />
+						{/* <div className="w-full h-px bg-border-primary my-8" /> */}
+						{/* <PensionPlanSection lei={lei} setISINumber={setISINumber} ISINumber={ISINumber} setIsinVerified={setIsinVerified} /> */}
 
 						<CategoryHeader
 							title="Wallet"
@@ -143,7 +143,7 @@ const KnightsbridgeContent: React.FC<KnightsbridgeProps> = ({ isDarkMode, onThem
 						</div>
 
 						<div className="w-full h-px bg-border-primary my-8" />
-						<ContactInformationSection lei={ leiVerified?lei:undefined} isin={isinVerified?ISINumber:undefined} wallet={wallet}/>
+						<ContactInformationSection lei={ leiVerified?lei:undefined}  wallet={wallet}/>
 
 						{/* <div className="w-full h-px bg-border-primary my-8" />
 						<TokenMintForm />
