@@ -57,15 +57,7 @@ const FAQ: React.FC<FAQProps> = ({ isDarkMode, onThemeToggle }) => {
     // Note: download attribute doesn't work for cross-origin, but Google Drive will handle the download
     const downloadLink = `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
     
-    // Method 1: Try hidden iframe (works in most browsers)
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.style.width = '0';
-    iframe.style.height = '0';
-    iframe.src = downloadLink;
-    document.body.appendChild(iframe);
-    
-    // Method 2: Also try direct link as backup
+    // Use direct link method (works reliably for Google Drive)
     const link = document.createElement('a');
     link.href = downloadLink;
     link.target = '_blank';
@@ -75,13 +67,7 @@ const FAQ: React.FC<FAQProps> = ({ isDarkMode, onThemeToggle }) => {
     link.click();
     document.body.removeChild(link);
     
-    // Clean up iframe after delay
-    setTimeout(() => {
-      if (document.body.contains(iframe)) {
-        document.body.removeChild(iframe);
-      }
-      setIsDownloading(false);
-    }, 2000);
+    setIsDownloading(false);
   };
   
   const faqs = [
