@@ -12,6 +12,77 @@ interface FAQProps {
 const FAQ: React.FC<FAQProps> = ({ isDarkMode, onThemeToggle }) => {
 
   const [showInstallationInstructions, setShowInstallationInstructions] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+
+  // Download extension zip file from Google Drive
+  const handleDownloadExtension = async () => {
+    setIsDownloading(true);
+    
+    // Google Drive file ID from the provided URL
+    const fileId = '1AlOwMByT5Bb_Oz2TLD7KD5PParKUx581';
+    
+    // Try fetch method first (works if CORS allows)
+    try {
+      const downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
+      
+      const response = await fetch(downloadUrl, {
+        method: 'GET',
+        redirect: 'follow',
+        mode: 'cors'
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        
+        // Check if we got the actual file (not HTML error page)
+        if (blob.size > 1000 && !blob.type.includes('text/html')) {
+          // Create download link
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = 'signify-extension.zip';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+          setIsDownloading(false);
+          return;
+        }
+      }
+    } catch (fetchError) {
+      console.log('Fetch method failed (likely CORS issue), using direct link method:', fetchError);
+    }
+
+    // Fallback: Use direct link click (most reliable for Google Drive, bypasses CORS)
+    // Note: download attribute doesn't work for cross-origin, but Google Drive will handle the download
+    const downloadLink = `https://drive.google.com/uc?export=download&id=${fileId}&confirm=t`;
+    
+    // Method 1: Try hidden iframe (works in most browsers)
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.style.width = '0';
+    iframe.style.height = '0';
+    iframe.src = downloadLink;
+    document.body.appendChild(iframe);
+    
+    // Method 2: Also try direct link as backup
+    const link = document.createElement('a');
+    link.href = downloadLink;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Clean up iframe after delay
+    setTimeout(() => {
+      if (document.body.contains(iframe)) {
+        document.body.removeChild(iframe);
+      }
+      setIsDownloading(false);
+    }, 2000);
+  };
   
   const faqs = [
     {
@@ -104,9 +175,13 @@ const FAQ: React.FC<FAQProps> = ({ isDarkMode, onThemeToggle }) => {
 
 							{/* Download Button */}
 							<div className="flex justify-center mb-8">
-								<button className="group px-8 py-4 bg-text-primary text-bg-primary rounded-lg text-lg font-medium hover:bg-text-secondary transition-all duration-200 flex items-center justify-center gap-3 min-w-[250px]">
+								<button 
+									onClick={handleDownloadExtension}
+									disabled={isDownloading}
+									className="group px-8 py-4 bg-text-primary text-bg-primary rounded-lg text-lg font-medium hover:bg-text-secondary transition-all duration-200 flex items-center justify-center gap-3 min-w-[250px] disabled:opacity-50 disabled:cursor-not-allowed"
+								>
 									<Download className="w-5 h-5" />
-									Download Extension
+									{isDownloading ? 'Downloading...' : 'Download Extension'}
 								</button>
 							</div>
 
