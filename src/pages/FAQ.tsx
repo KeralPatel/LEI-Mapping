@@ -72,46 +72,6 @@ const FAQ: React.FC<FAQProps> = ({ isDarkMode, onThemeToggle }) => {
   
   const faqs = [
     {
-      id: "1",
-      question: "What is the difference between Decentralized and Knightsbridge routes?",
-      answer: "The Decentralized route offers a fully autonomous token launch process, while the Knightsbridge Approved route provides additional compliance, legal structuring, and professional vetting services for a more secure and regulated approach."
-    },
-    {
-      id: "2",
-      question: "How long does the token creation process take?",
-      answer: "For Decentralized launches, tokens can be created within 24-48 hours. Knightsbridge Approved processes typically take 2-4 weeks due to additional compliance and legal review requirements."
-    },
-    {
-      id: "3",
-      question: "What payment methods do you accept?",
-      answer: "We accept multiple payment methods including Stripe (credit/debit cards), USDT (cryptocurrency), and Bitcoin for maximum flexibility."
-    },
-    {
-      id: "4",
-      question: "Do you provide legal documentation?",
-      answer: "Yes, both routes offer legal documentation services. The Knightsbridge route includes comprehensive legal structuring, while the Decentralized route offers optional legal document packages."
-    },
-    {
-      id: "5",
-      question: "Can you help with exchange listings?",
-      answer: "Absolutely! We provide exchange listing services for both centralized and decentralized exchanges, helping you get your token listed on major trading platforms."
-    },
-    {
-      id: "6",
-      question: "What blockchain networks do you support?",
-      answer: "We support multiple blockchain networks including Ethereum, Binance Smart Chain, Polygon, and other EVM-compatible networks. Custom blockchain requirements can be discussed during consultation."
-    },
-    {
-      id: "7",
-      question: "Do you provide ongoing support after token launch?",
-      answer: "Yes, we offer post-launch support including technical assistance, marketing guidance, and additional services to help ensure your project's success."
-    },
-    {
-      id: "8",
-      question: "What documents do I need to prepare?",
-      answer: "Required documents vary by route. Generally, you'll need business plans, KYC documentation, and any relevant legal documents. Our platform will guide you through the specific requirements for your chosen path."
-    },
-    {
       id: "9",
       question: "How does Knightsbridge integrate with my existing ERP?",
       answer: "It doesn't, no API exists at this time."
