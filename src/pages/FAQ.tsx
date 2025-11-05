@@ -110,6 +110,41 @@ const FAQ: React.FC<FAQProps> = ({ isDarkMode, onThemeToggle }) => {
       id: "8",
       question: "What documents do I need to prepare?",
       answer: "Required documents vary by route. Generally, you'll need business plans, KYC documentation, and any relevant legal documents. Our platform will guide you through the specific requirements for your chosen path."
+    },
+    {
+      id: "9",
+      question: "How does Knightsbridge integrate with my existing ERP?",
+      answer: "It doesn't, no API exists at this time."
+    },
+    {
+      id: "10",
+      question: "What support options are available?",
+      answer: "Email support is available via the Contact us page, we are open 5 days a week and will respond as soon as possible."
+    },
+    {
+      id: "11",
+      question: "Is Lot Switch compatible with all blockchains?",
+      answer: "Yes, currently the Protocol supports only the Knightsbridge Chain. Custom integrations for private chains or major chains can be done, please contact us for more information."
+    },
+    {
+      id: "12",
+      question: "How secure is the mapping process against data breaches?",
+      answer: "Extremely secure—the protocol employs end-to-end encryption, to ensure your LEI verification is as secure as possible."
+    },
+    {
+      id: "13",
+      question: "Can I use the LEI mapping without blockchain expertise?",
+      answer: "Absolutely. Our no-code dashboard and guided onboarding make it accessible for non-technical users. Training modules are available upon request."
+    },
+    {
+      id: "14",
+      question: "What happens if my verification fails?",
+      answer: "Failures usually means something is wrong with you LEI credentials, please reach out to your LEI provider for more information."
+    },
+    {
+      id: "15",
+      question: "Does Knightsbridge comply with industry regulations?",
+      answer: "Yes, it's designed to meet the European Blockchains Sandbox regulators standard and with their input."
     }
   ];
 

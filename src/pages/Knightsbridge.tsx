@@ -99,10 +99,10 @@ const KnightsbridgeContent: React.FC<KnightsbridgeProps> = ({ isDarkMode, onThem
 							/>
 						</div> */}
 						<h1 className="text-text-primary text-center text-3xl md:text-5xl lg:text-[75px] font-normal mb-8 md:mb-11 leading-tight">
-							Knightsbridge Approved Process
+							Knightsbridge LEI Wallet Mapping
 						</h1>
 						<p className="text-text-secondary text-lg md:text-xl lg:text-2xl max-w-4xl mx-auto leading-relaxed">
-							Submit your business plan, complete KYC, and let our team handle the legal, hosting, and compliance to ensure a secure, vetted token launch.
+						Submit your LEI verification and wallet address to complete your Blockchain Mapping.
 						</p>
 					</div>
 				</section>
@@ -170,15 +170,7 @@ const KnightsbridgeContent: React.FC<KnightsbridgeProps> = ({ isDarkMode, onThem
 						<LegalDocumentsSection /> */}
 					</form>
 
-					<div className="flex-[3] min-w-0 relative">
-						<div className="sticky top-4">
-							<KnightsbridgeServicesSidebar
-								onCheckout={handleCheckout}
-								selectedServices={selectedServices}
-								isSubmitting={isSubmitting}
-							/>
-						</div>
-					</div>
+
 				</div>
 
 
