@@ -17,6 +17,8 @@ export const SavingsPlanSection: React.FC<SavingsPlanSectionProps> = ({ lei, set
 	const [signifyClient, setSignifyClient] = useState<ExtensionClient | null>(null);
 	const { toast } = useToast();
 	const [isLoading, setIsLoading] = useState(false);
+	const [isVerifyingFile, setIsVerifyingFile] = useState(false);
+	const fileInputRef = React.useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
 		const client = createClient();
@@ -169,6 +171,77 @@ export const SavingsPlanSection: React.FC<SavingsPlanSectionProps> = ({ lei, set
 		}
 	};
 
+
+	const handleVerifyCesrFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
+		const file = event.target.files?.[0];
+		if (!file) return;
+
+		if (isVerifyingFile) return;
+		setIsVerifyingFile(true);
+
+		try {
+			const formData = new FormData();
+			formData.append('file', file);
+
+			const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/verify-vlei-file`, {
+				method: 'POST',
+				body: formData
+			});
+
+			let body: any = null;
+			try {
+				body = await response.json();
+			} catch {
+				// Response might not be JSON
+			}
+
+			if (response.ok) {
+				setLeiVerified(true);
+				const credentialInfo = body?.credential 
+					? `SAID: ${body.credential.said}, Schema: ${body.credential.schema}, Issuer: ${body.credential.issuer}`
+					: '';
+				toast({ 
+					title: 'Verification successful', 
+					description: body?.msg || 'Credential verified successfully.' + (credentialInfo ? ` ${credentialInfo}` : '')
+				});
+			} else if (response.status === 400) {
+				toast({ 
+					title: 'Bad request', 
+					description: body?.msg || 'The request is invalid or the file format is incorrect.', 
+					variant: 'destructive' 
+				});
+			} else if (response.status === 500) {
+				toast({ 
+					title: 'Server error', 
+					description: body?.msg || 'An unexpected error occurred during verification.', 
+					variant: 'destructive' 
+				});
+			} else {
+				toast({ 
+					title: `Request failed (${response.status})`, 
+					description: body?.msg || response.statusText || 'Unknown error', 
+					variant: 'destructive' 
+				});
+			}
+		} catch (apiError: any) {
+			toast({ 
+				title: 'Network error', 
+				description: apiError?.message || 'Failed to call verification API.', 
+				variant: 'destructive' 
+			});
+		} finally {
+			setIsVerifyingFile(false);
+			// Reset file input to allow uploading the same file again
+			if (fileInputRef.current) {
+				fileInputRef.current.value = '';
+			}
+		}
+	};
+
+	const handleFileButtonClick = () => {
+		fileInputRef.current?.click();
+	};
+
 	return (
 		<section className="box-border m-0 p-0">
 			<CategoryHeader
@@ -184,16 +257,35 @@ export const SavingsPlanSection: React.FC<SavingsPlanSectionProps> = ({ lei, set
 							isUploading={fileUpload.isUploading('savingsPlanGuide')}
 							onRemoveFile={() => fileUpload.removeFile('savingsPlanGuide')}
 						/> */}
-						<button
-							type="button"
-							disabled={isLoading}
-							onClick={handleOpenSignify}
-							className="box-border w-[271px] h-16 border flex items-center justify-center gap-8 m-0 p-0 rounded-xl border-solid border-input-border max-sm:w-full cursor-pointer hover:border-text-primary transition-colors"
-						>
-							<div className="box-border text-text-primary text-xl font-normal m-0 p-0">
-								Verify vLEI
-							</div>
-						</button>
+						<div className="flex flex-col gap-2">
+							<button
+								type="button"
+								disabled={isLoading}
+								onClick={handleOpenSignify}
+								className="box-border w-[271px] h-16 border flex items-center justify-center gap-8 m-0 p-0 rounded-xl border-solid border-input-border max-sm:w-full cursor-pointer hover:border-text-primary transition-colors"
+							>
+								<div className="box-border text-text-primary text-xl font-normal m-0 p-0">
+									Verify vLEI
+								</div>
+							</button>
+							<input
+								ref={fileInputRef}
+								type="file"
+								accept=".cesr,text/plain"
+								onChange={handleVerifyCesrFile}
+								className="hidden"
+							/>
+							<button
+								type="button"
+								disabled={isVerifyingFile}
+								onClick={handleFileButtonClick}
+								className="box-border w-[271px] h-16 border flex items-center justify-center gap-8 m-0 p-0 rounded-xl border-solid border-input-border max-sm:w-full cursor-pointer hover:border-text-primary transition-colors"
+							>
+								<div className="box-border text-text-primary text-xl font-normal m-0 p-0">
+									{isVerifyingFile ? 'Verifying...' : 'Upload CESR File'}
+								</div>
+							</button>
+						</div>
 					</>
 				}
 			/>
